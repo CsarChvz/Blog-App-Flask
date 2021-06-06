@@ -1,5 +1,4 @@
-from flask import Flask, request, render_template
-from flask_bootstrap import Bootstrap
+from flask import Flask, request, render_template, url_for
 
 app = Flask(__name__)
 
