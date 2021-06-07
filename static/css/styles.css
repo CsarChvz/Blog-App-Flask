@@ -1,3 +1,7 @@
 body{
     background: linear-gradient(#035486,#010029);
 }
+
+.navbar{
+    background-color: transparent !important;
+}
