@@ -5,11 +5,16 @@
 {% block head %}
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stars.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 {% endblock %}
-<img src="{{ url_for('static', filename='src/img/stars.png') }}" alt="" style="position: fixed;" loading='lazy'>
 <body>
+    <section class="wrapper">
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+    </section>
 {% block navbar %}
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: transparent !important;">
