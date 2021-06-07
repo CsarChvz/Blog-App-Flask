@@ -1,7 +1,8 @@
-html{
+body{
     background: linear-gradient(#035486,#010029);
+    overflow: hidden;
 }
-
 .navbar{
     background-color: transparent !important;
 }
+
