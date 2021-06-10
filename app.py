@@ -16,7 +16,7 @@ app.config['SECRET_KEY'] = 'hard to guess string'
 # Clases para formularios
 
 class NameForm(FlaskForm):
-
+    # Se hace un objeto con los clases
     name = StringField('What is your name?', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
