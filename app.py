@@ -2,9 +2,21 @@ from flask import Flask, request, render_template, url_for
 from flask.globals import current_app
 from flask_moment import Moment
 from datetime import datetime
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+
 
 app = Flask(__name__)
 moment = Moment(app)
+
+#Hacemos una llave secreta con una cadena para que lo que se envie entre el servidor y el cliente se encripte
+app.config['SECRET_KEY'] = 'hard to guess string'
+
+# Clases para formularios
+
+class NameFOrm(FlaskForm)
+
 
 @app.route('/')
 def index():
