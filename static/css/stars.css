@@ -555,13 +555,12 @@
     498px 1947px #fff, 617px 880px #fff, 240px 403px #fff;
 }
 
-/* 
-@keyframes animStar {
+
+/* @keyframes animStar {
     from {
-        transform: translateY(0%);
+        transform: translateY(0px);
     }
     to {
         transform: translateY(-2000px);
     }
-} 
- */
+}  */
