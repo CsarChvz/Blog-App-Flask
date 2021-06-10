@@ -15,7 +15,10 @@ app.config['SECRET_KEY'] = 'hard to guess string'
 
 # Clases para formularios
 
-class NameFOrm(FlaskForm)
+class NameForm(FlaskForm):
+
+    name = StringField('What is your name?', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
 
 @app.route('/')
