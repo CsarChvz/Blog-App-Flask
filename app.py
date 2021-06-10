@@ -2,13 +2,16 @@ from flask import Flask, request, render_template, url_for
 from flask.globals import current_app
 from flask_moment import Moment
 from datetime import datetime
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, form
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+
+from flask_bootstrap import Bootstrap
 
 
 app = Flask(__name__)
 moment = Moment(app)
+bootstrap = Bootstrap(app)
 
 #Hacemos una llave secreta con una cadena para que lo que se envie entre el servidor y el cliente se encripte
 app.config['SECRET_KEY'] = 'hard to guess string'
@@ -29,6 +32,16 @@ def index():
 @app.route('/user/<name>')
 def user_name(name):
     return render_template('user.html', name=name)
+
+@app.route('/askName', methods=['GET', 'POST'])
+def askName():
+    name = None
+    form = NameForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ''
+    return render_template('askName.html', form=form, name=name)
+
 
 @app.errorhandler(404)
 def page_not_found(e):
