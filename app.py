@@ -1,5 +1,5 @@
-from flask import Flask, request, render_template, url_for
-from flask.globals import current_app
+from flask import Flask, request, render_template, url_for, redirect
+from flask.globals import current_app, session
 from flask_moment import Moment
 from datetime import datetime
 from flask_wtf import FlaskForm, form
@@ -38,9 +38,9 @@ def askName():
     name = None
     form = NameForm()
     if form.validate_on_submit():
-        name = form.name.data
-        form.name.data = ''
-    return render_template('askName.html', form=form, name=name)
+        session['name'] = form.name.data
+        return redirect(url_for('askName'))
+    return render_template('askName.html', form=form, name=session.get('name'))
 
 
 @app.errorhandler(404)
