@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for, redirect
+from flask import Flask, request, render_template, url_for, redirect, flash
 from flask.globals import current_app, session
 from flask_moment import Moment
 from datetime import datetime
@@ -35,13 +35,14 @@ def user_name(name):
 
 @app.route('/askName', methods=['GET', 'POST'])
 def askName():
-    name = None
     form = NameForm()
     if form.validate_on_submit():
+        old_name = session.get('name')
+        if old_name is not None and old_name != form.name.data:
+            flash('Looks like you have changed your name! ')
         session['name'] = form.name.data
         return redirect(url_for('askName'))
-    return render_template('askName.html', form=form, name=session.get('name'))
-
+    return render_template('askName.html', form=form, name = session.get('name'))
 
 @app.errorhandler(404)
 def page_not_found(e):
