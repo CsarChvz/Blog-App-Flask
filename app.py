@@ -7,6 +7,8 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 
 from flask_bootstrap import Bootstrap
+import os 
+from flask-sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
@@ -15,8 +17,24 @@ bootstrap = Bootstrap(app)
 
 #Hacemos una llave secreta con una cadena para que lo que se envie entre el servidor y el cliente se encripte
 app.config['SECRET_KEY'] = 'hard to guess string'
-
+#Configuracion para la base de datos
+app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///file.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 # Clases para formularios
+
+
+db = SQLAlchemy(app)
+
+#Modelos para base de datos
+
+class Role(db.Model):
+
+    __table__name = 'roles'
+    id = db.Column(db.Integer, primary_key=True)   
+    name = db.Column(db.String(64), unique=True)
+
+    def __repr__(self) -> str:
+        return '<Role %r>' % self.name
 
 class NameForm(FlaskForm):
     # Se hace un objeto con los clases
