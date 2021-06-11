@@ -8,7 +8,7 @@ from wtforms.validators import DataRequired
 
 from flask_bootstrap import Bootstrap
 import os 
-from flask-sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
@@ -28,13 +28,16 @@ db = SQLAlchemy(app)
 #Modelos para base de datos
 
 class Role(db.Model):
-
-    __table__name = 'roles'
-    id = db.Column(db.Integer, primary_key=True)   
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
+    users = db.relationship('User', backref='role')
 
-    def __repr__(self) -> str:
-        return '<Role %r>' % self.name
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
 class NameForm(FlaskForm):
     # Se hace un objeto con los clases
