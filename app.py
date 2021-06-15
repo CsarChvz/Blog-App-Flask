@@ -9,7 +9,7 @@ from wtforms.validators import DataRequired
 from flask_bootstrap import Bootstrap
 import os 
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 moment = Moment(app)
@@ -24,7 +24,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 
 db = SQLAlchemy(app)
-
+migrate = Migrate(app, db)
 #Modelos para base de datos
 
 class Role(db.Model):
