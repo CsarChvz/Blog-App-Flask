@@ -1,3 +1,0 @@
--Exportar la variable en el entorno para que flask corra la aplicacion desde el flasky.py, no desde el app/run.py
--Crear la base de datos o hacerle el update
--Ver lo del MAIL
