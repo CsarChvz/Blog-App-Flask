@@ -6,7 +6,7 @@ body{
     background-color: transparent !important;
 }
 
-
+/* 
 @keyframes animStar {
     from {
         transform: translateY(0px);
@@ -14,4 +14,4 @@ body{
     to {
         transform: translateY(-2000px);
     }
-} 
+}  */
