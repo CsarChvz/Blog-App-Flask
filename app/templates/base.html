@@ -44,7 +44,7 @@
                         <a class="nav-item nav-link" href="">Account</a>
                     {% else %}
                         <a class="nav-item nav-link" href="{{ url_for('auth.login') }}">Log In</a>
-                        <a class="nav-item nav-link" href="">Register</a>
+                        <a class="nav-item nav-link" href="{{ url_for('auth.register') }}">Register</a>
                     {% endif %}
                 </div>
             </div>
