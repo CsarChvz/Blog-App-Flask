@@ -6,6 +6,11 @@ body{
     background-color: transparent !important;
 }
 
+.contenedor-flex{
+    display: flex !important;
+    justify-content: space-evenly !important;
+    flex-wrap: wrap !important;
+}
 /* 
 @keyframes animStar {
     from {
