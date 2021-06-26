@@ -1,21 +1,29 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %} <title> Yaijh cx </title>{% endblock %}
-
+{% block title %} <title> Login </title>{% endblock %}
+{% block links %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+{% endblock %}
 {% block styles %}
 <style>
     *{
         color: white;
     }
+
+    .contenedor-flex{
+    display: flex !important;
+    justify-content: space-evenly !important;
+    flex-wrap: wrap !important;
+    }
+
 </style>
 {% endblock %}
 {% block page_content %}
-
-    <div class="page-header">
+<div class="contenedor-flex">
+    <div class="col-md-5">
         <h1>Login</h1>
+        {{ wtf.quick_form(form) }}
     </div>
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
-        </div>
+</div>
 {% endblock %}
