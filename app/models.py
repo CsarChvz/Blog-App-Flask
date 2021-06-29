@@ -1,9 +1,14 @@
 from enum import unique
 from operator import index
+from re import S
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login_manager
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
+from . import db
+
 
 #Este decorador es usado para registrar la funcion con Flask-Login, el cual va a llamara cuando se necesite devolver informacion acerca del usuario
 @login_manager.user_loader
@@ -27,7 +32,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    
+    confirmed = db.Column(db.Boolean, default=False)
     
     #Se hace un atributo en el cual se guarda la clave en cadena sencilla
     
