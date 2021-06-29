@@ -25,3 +25,5 @@ def askName():
         session['name'] = form.name.data
         return redirect(url_for('.askName'))
     return render_template('askName.html', form=form, name = session.get('name'))
+
+
