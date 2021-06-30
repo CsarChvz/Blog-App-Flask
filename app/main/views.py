@@ -6,6 +6,7 @@ from ..email import send_email
 from . import main
 from .forms import NameForm
 from datetime import datetime
+
 @main.route('/')
 def index():
     return render_template('index.html',\
@@ -26,4 +27,4 @@ def askName():
         return redirect(url_for('.askName'))
     return render_template('askName.html', form=form, name = session.get('name'))
 
-
+    
