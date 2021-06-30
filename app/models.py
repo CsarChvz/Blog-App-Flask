@@ -88,15 +88,23 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     
-
+    
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
-        if self.role is None:
-            if self.email == current_app.config['FLASKY_ADMIN']:
-                self.role = Role.query.filter_by(name='Administrator').first()
+        for u in User.query.all():
+            if self.role is None:
+                if self.email == current_app.config['FLASKY_ADMIN']:
+                    self.role = Role.query.filter_by(name='Administrator').first()
                 if self.role is None:
                     self.role = Role.query.filter_by(default=True).first()
+                    print(self.role)
+        db.session.commit()
 
+    def can(self, perm):
+        return self.role is not None and self.role.has_permission(perm)
+
+    def is_administrator(self):
+        return self.can(Permission.ADMIN)
     #Se hace un atributo en el cual se guarda la clave en cadena sencilla
     
     #Si se intenta leer no se va a poder porque va a dar un error
