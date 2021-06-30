@@ -9,7 +9,7 @@ from . import login_manager
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from . import db
-
+from datetime import date, datetime
 
 #Este decorador es usado para registrar la funcion con Flask-Login, el cual va a llamara cuando se necesite devolver informacion acerca del usuario
 @login_manager.user_loader
@@ -36,6 +36,7 @@ class Role(db.Model):
         super(Role, self).__init__(**kwargs)
         if self.permissions is None:
             self.permissions = 0
+        #self.insert_roles()
 
     def add_permission(self, perm):
         if not self.has_permission(perm):
@@ -87,6 +88,11 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    name = db.Column(db.String(64))
+    location = db.Column(db.String(64))
+    about_me = db.Column(db.Text())
+    #member_since = db.Column(db.DateTime(datetime.utcnow), default = datetime.utcnow)
+    #last_seen = db.Column(db.DateTime(datetime.utcnow), default = datetime.utcnow)
     
     
     def __init__(self, **kwargs):
@@ -105,6 +111,11 @@ class User(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
+
+    def ping(self):
+        self.last_seen = datetime.utcnow
+        db.session.add(self)
+        db.session.commit()
     #Se hace un atributo en el cual se guarda la clave en cadena sencilla
     
     #Si se intenta leer no se va a poder porque va a dar un error

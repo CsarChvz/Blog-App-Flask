@@ -1,13 +1,16 @@
 from flask import render_template, redirect, url_for
 from flask.globals import request
 from flask.helpers import flash
-from flask_login.utils import login_required, login_user, logout_user
+from flask_login.utils import login_required, login_user, logout_user, current_user
 from wtforms import form
 from . import auth
 from .forms import LoginForm, RegistrationForm
 from ..models import User
 from app import db
 
+
+
+                    
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
