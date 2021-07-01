@@ -2,6 +2,8 @@ from enum import unique
 from operator import index
 from re import S
 import re
+
+from sqlalchemy.orm import defaultload
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
@@ -91,7 +93,6 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
-
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
