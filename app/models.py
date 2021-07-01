@@ -91,10 +91,8 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
-    #member_since = db.Column(db.DateTime(datetime.utcnow), default = datetime.utcnow)
-    #last_seen = db.Column(db.DateTime(datetime.utcnow), default = datetime.utcnow)
-    
-    
+
+
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         for u in User.query.all():
@@ -104,7 +102,8 @@ class User(UserMixin, db.Model):
                 if self.role is None:
                     self.role = Role.query.filter_by(default=True).first()
                     print(self.role)
-        db.session.commit()
+            db.session.add(u)
+            db.session.commit()
 
     def can(self, perm):
         return self.role is not None and self.role.has_permission(perm)
