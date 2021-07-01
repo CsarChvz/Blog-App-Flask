@@ -4,8 +4,10 @@ from .. import db
 from ..models import User
 from ..email import send_email
 from . import main
-from .forms import NameForm
+from .forms import NameForm, EditProfile
 from datetime import datetime
+from flask_login.utils import login_required, login_user, logout_user, current_user
+
 
 @main.route('/')
 def index():
@@ -27,3 +29,23 @@ def askName():
 def user(username):
     user = User.query.filter_by(username=username).first()
     return render_template('user.html', user=user)
+
+@main.route('/editar-perfil', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfile()
+    user = current_user.username
+    #print(user)
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.location = form.location.data
+        current_user.about_me = form.about_me.data
+        #db.session.add(current_user.__get_current_object())
+        db.session.add(User())
+        db.session.commit()
+        flash('Your profile has been updated')
+        return redirect(url_for('main.user', username=current_user.username))
+    form.name.data = current_user.name
+    form.location.data = current_user.location
+    form.about_me.data = current_user.about_me
+    return render_template('edit_profile.html', form=form, user=user)
