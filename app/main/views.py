@@ -12,10 +12,6 @@ def index():
     return render_template('index.html',\
         current_time = datetime.utcnow())
 
-@main.route('/user/<name>')
-def user_name(name):
-    return render_template('user.html', name=name)
-
 @main.route('/askName', methods=['GET', 'POST'])
 def askName():
     form = NameForm()
@@ -29,5 +25,5 @@ def askName():
 
 @main.route('/user/<username>')
 def user(username):
-    user = User.query.filter_by(username=username).first_or_404()
+    user = User.query.filter_by(username=username).first()
     return render_template('user.html', user=user)
