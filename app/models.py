@@ -2,6 +2,7 @@ from enum import unique
 from operator import index
 from re import S
 import re
+from flask.globals import request
 
 from sqlalchemy.orm import defaultload
 from . import db
@@ -95,6 +96,8 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
+    avatar_hash = db.Column(db.String(32))
+
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -107,6 +110,24 @@ class User(UserMixin, db.Model):
                     print(self.role)
             db.session.add(u)
             db.session.commit()
+        if self.email is not None and self.avatar_hash is None:
+            #Se guarda el hash en el espacio del usuario, esto con la funcion que devuelve el hash
+            self.avatar_hash = self.gravatar_hash()
+    
+    #Funciono para hacer el hash con el email para el avatar
+    def gravatar_hash(self):
+        return hashlib.md5(self.email.lower()).encode('utf-8').hexdigest()
+
+
+    #Funcion para genera avatar
+
+    def gravatar(self, size=100, default='identicon', rating='g'):
+        if request.is_secure:
+            url = 'https://secure.gravatar.com/avatar'    
+        else:
+            url = 'https://www.gravatar/avatar'
+        hash = self.avatar_hash or self.gravatar_hash
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(url=url, hash=hash, size=size, default=default, rating=rating)
 
     def can(self, perm):
         return self.role is not None and self.role.has_permission(perm)
@@ -118,13 +139,6 @@ class User(UserMixin, db.Model):
         self.last_seen = datetime.utcnow
         db.session.add(self)
         db.session.commit()
-
-    #Funcion para genera avatar
-
-    def gravatar(self, size=100, default='identicon', rating='g'):
-        url = 'https://secure.gravatar.com/avatar'
-        hash = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
-        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(url=url, hash=hash, size=size, default=default, rating=rating)
     #Se hace un atributo en el cual se guarda la clave en cadena sencilla
     
     #Si se intenta leer no se va a poder porque va a dar un error
