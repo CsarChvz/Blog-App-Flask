@@ -13,6 +13,8 @@ from flask import current_app
 from . import db
 from datetime import date, datetime
 
+import hashlib
+
 #Este decorador es usado para registrar la funcion con Flask-Login, el cual va a llamara cuando se necesite devolver informacion acerca del usuario
 @login_manager.user_loader
 def load_user(user_id):
@@ -116,6 +118,13 @@ class User(UserMixin, db.Model):
         self.last_seen = datetime.utcnow
         db.session.add(self)
         db.session.commit()
+
+    #Funcion para genera avatar
+
+    def gravatar(self, size=100, default='identicon', rating='g'):
+        url = 'https://secure.gravatar.com/avatar'
+        hash = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(url=url, hash=hash, size=size, default=default, rating=rating)
     #Se hace un atributo en el cual se guarda la clave en cadena sencilla
     
     #Si se intenta leer no se va a poder porque va a dar un error
