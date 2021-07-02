@@ -7,7 +7,7 @@
     <div class="container" style="color: white;">
         <img src="{{ user.gravatar(size=256) }}" alt="img-rounded profile-thumbnail" style="border-radius: 10px;">
         <div class="profile-header" style="display: inline-block;">
-            <div style="margin-left: 2em; margin-bottom: 2em; display: flexbox;">
+            <div style="margin-left: 2em; display: flexbox;">
                 <h1>{{ user.username }}</h1>
                 {% if user.name or user.location %}
                 <p>
