@@ -28,6 +28,7 @@ def askName():
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first()
+    print(user.gravatar())
     return render_template('profile.html', user=user)
 
 @main.route('/editar-perfil', methods=['GET', 'POST'])
