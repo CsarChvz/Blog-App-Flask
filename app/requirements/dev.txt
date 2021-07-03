@@ -1,0 +1,2 @@
+-r common.txt
+faker==8.9.1
