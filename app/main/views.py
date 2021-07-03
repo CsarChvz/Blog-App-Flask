@@ -19,7 +19,7 @@ def index():
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('main.index'))
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    posts = Post.query.all()
     return render_template('index.html', form=form, posts=posts)
 
 @main.route('/askName', methods=['GET', 'POST'])
@@ -38,10 +38,9 @@ def user(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         return redirect(url_for('404.html'), 404)
-    posts = user.posts.order_by(Post.timestamp.desc()).all()
+    posts = user.posts.all()
     return render_template('profile.html', posts=posts, user=user)
 
-    return render_template('profile.html', user=user)
 
 @main.route('/editar-perfil', methods=['GET', 'POST'])
 @login_required
