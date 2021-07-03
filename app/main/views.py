@@ -1,18 +1,25 @@
 from flask import render_template, session, redirect, url_for, current_app
 from flask.helpers import flash
 from .. import db
-from ..models import User
+from ..models import Permission, Post, User
 from ..email import send_email
 from . import main
-from .forms import NameForm, EditProfile
+from .forms import NameForm, EditProfile, PostForm
 from datetime import datetime
 from flask_login.utils import login_required, login_user, logout_user, current_user
 
 
 @main.route('/')
 def index():
-    return render_template('index.html',\
-        current_time = datetime.utcnow())
+    form = PostForm()
+    if current_user.can(Permission.WRITE) and form.validate_on_submit():
+        post = Post(body=form.body.data,\
+            author=current_user.__get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('main.index'))
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('index.html', form=form, posts=posts)
 
 @main.route('/askName', methods=['GET', 'POST'])
 def askName():
