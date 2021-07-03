@@ -11,7 +11,7 @@ body{
     justify-content: space-evenly !important;
     flex-wrap: wrap !important;
 }
-/* 
+
 @keyframes animStar {
     from {
         transform: translateY(0px);
@@ -19,7 +19,7 @@ body{
     to {
         transform: translateY(-2000px);
     }
-}  */
+}
 
 .profile-thumbnail {
     position: absolute;
