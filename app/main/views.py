@@ -1,3 +1,5 @@
+from operator import pos
+import re
 from flask import render_template, session, redirect, url_for, current_app
 from flask.helpers import flash
 from .. import db
@@ -12,6 +14,11 @@ from flask_login.utils import login_required, login_user, logout_user, current_u
 @main.route('/', methods=['GET', 'POST'])
 def index():
     form = PostForm()
+    if current_user.can(Permission.WRITE) and form.validate_on_submit():
+        post = Post(body=form.body.data, author=current_user._get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('main.index'))
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('index.html', form=form, posts=posts)
 
@@ -29,6 +36,11 @@ def askName():
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first()
+    if user is None:
+        return redirect(url_for('404.html'), 404)
+    posts = user.posts.order_by(Post.timestamp.desc()).all()
+    return render_template('profile.html', posts=posts, user=user)
+
     return render_template('profile.html', user=user)
 
 @main.route('/editar-perfil', methods=['GET', 'POST'])
