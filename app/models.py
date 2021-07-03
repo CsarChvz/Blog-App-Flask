@@ -12,7 +12,7 @@ from . import login_manager
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from . import db
-from datetime import date, datetime
+from datetime import datetime, timezone
 
 import hashlib
 
@@ -91,6 +91,8 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
+    #member_since = db.Column(db.DateTime(), default=datetime.utcnow)
+    #last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
@@ -178,7 +180,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
-    timestamp = db.Column(db.Text(), index=True, default=datetime.utcnow)
+    #timestamp = db.Column(db.DateTime(timezone=True), index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 @login_manager.user_loader
