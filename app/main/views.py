@@ -1,6 +1,8 @@
+from logging import error
 from operator import pos
 import re
 from flask import render_template, session, redirect, url_for, current_app
+from flask.globals import request
 from flask.helpers import flash
 from .. import db
 from ..models import Permission, Post, User
@@ -19,8 +21,12 @@ def index():
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('main.index'))
-    posts = Post.query.all()
-    return render_template('index.html', form=form, posts=posts)
+    page = request.args.get('page', 1, type=int)
+    pagination = Post.query.paginate(
+        page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'], error_out=False
+    )
+    posts = pagination.items
+    return render_template('index.html', form=form, posts=posts, pagination=pagination)
 
 @main.route('/askName', methods=['GET', 'POST'])
 def askName():
@@ -60,3 +66,8 @@ def edit_profile():
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form, user=user)
+
+@main.route('/post/<int:id>')
+def post(id):
+    post = Post.query.get_or_404(id)
+    return render_template('post.html', posts=[post])
