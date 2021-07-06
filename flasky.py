@@ -1,6 +1,7 @@
 import os
 import click
 from flask_migrate import Migrate
+# Importamos los metodos y atributos de la aplicacion para crearlo
 from app import create_app, db
 from app.models import User, Role
 
