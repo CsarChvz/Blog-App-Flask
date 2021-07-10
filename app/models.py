@@ -122,10 +122,7 @@ class User(UserMixin, db.Model):
     #Funcion para genera avatar
 
     def gravatar(self, size=100, default='identicon', rating='g'):
-        if request.is_secure:
-            url = 'https://secure.gravatar.com/avatar'    
-        else:
-            url = 'https://www.gravatar/avatar'
+        url = 'https://www.gravatar/avatar'
         hash = self.avatar_hash or self.gravatar_hash
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(url=url, hash=hash, size=size, default=default, rating=rating)
 
